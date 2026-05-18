@@ -1,4 +1,4 @@
-mvn -q test# EZ CERTS
+
 
 Proyecto base en Spring Boot MVC para gestion de recursos humanos y certificaciones.
 
