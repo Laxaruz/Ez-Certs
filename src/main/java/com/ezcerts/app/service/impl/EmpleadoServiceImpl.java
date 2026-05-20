@@ -31,6 +31,11 @@ public class EmpleadoServiceImpl implements EmpleadoService {
     }
 
     @Override
+    public Optional<Empleado> buscarPorUsuarioId(Long usuarioId) {
+        return empleadoRepository.findByUsuarioId(usuarioId);
+    }
+
+    @Override
     public Optional<Empleado> buscarPorNumeroDocumento(String numeroDocumento) {
         return empleadoRepository.findByNumeroDocumento(numeroDocumento);
     }
@@ -45,4 +50,3 @@ public class EmpleadoServiceImpl implements EmpleadoService {
         empleadoRepository.deleteById(id);
     }
 }
-

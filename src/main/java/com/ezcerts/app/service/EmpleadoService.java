@@ -11,10 +11,11 @@ public interface EmpleadoService {
 
     Optional<Empleado> buscarPorId(Long id);
 
+    Optional<Empleado> buscarPorUsuarioId(Long usuarioId);
+
     Optional<Empleado> buscarPorNumeroDocumento(String numeroDocumento);
 
     List<Empleado> listar();
 
     void eliminarEmpleado(Long id);
 }
-
