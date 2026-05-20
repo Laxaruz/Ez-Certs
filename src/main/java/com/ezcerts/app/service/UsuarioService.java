@@ -6,6 +6,8 @@ import java.util.Optional;
 
 public interface UsuarioService {
     Usuario crearUsuario(Usuario usuario);
+    
+    void registrarUsuarioYEmpleado(com.ezcerts.app.dto.UsuarioCrearDto dto) throws Exception;
 
     Usuario actualizarUsuario(Usuario usuario);
 
@@ -16,7 +18,12 @@ public interface UsuarioService {
     Optional<Usuario> buscarPorCorreo(String correo);
 
     List<Usuario> listar();
+    
+    List<Usuario> buscarUsuarios(String parametro);
 
     void inactivarUsuario(Long id);
+    
+    void actualizarUsuarioYEmpleado(Long id, com.ezcerts.app.dto.UsuarioCrearDto dto) throws Exception;
+    
+    void eliminarUsuario(Long id);
 }
-

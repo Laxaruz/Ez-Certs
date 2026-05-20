@@ -9,5 +9,6 @@ public interface SolicitudVacacionesRepository extends JpaRepository<SolicitudVa
     List<SolicitudVacaciones> findByEstado(EstadoSolicitud estado);
 
     List<SolicitudVacaciones> findByEmpleadoId(Long empleadoId);
+    
+    void deleteByEmpleadoId(Long empleadoId);
 }
-
