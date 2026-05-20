@@ -39,9 +39,6 @@
 
         <div class="d-flex justify-content-between align-items-center mb-4">
             <h3 class="fw-bold m-0" style="color: #0b2d4f;">Usuarios Activos</h3>
-            <a th:href="@{/dashboard/usuarios-activos/crear}" class="btn btn-primary d-flex align-items-center rounded-3 px-4 shadow-sm" style="background-color: #235487; border-color: #235487;">
-                + Crear Usuario
-            </a>
         </div>
 
         <div class="floating-wrapper">
@@ -50,13 +47,17 @@
                     <h4 class="fw-bold mb-3 d-flex align-items-center">
                         Usuarios
                     </h4>
-                    <div class="search-bar mb-4 d-flex">
-                        <div class="input-group">
-                            <span class="input-group-text bg-primary text-white border-primary"><i class="bi bi-search"></i></span>
-                            <input type="text" class="form-control border-primary text-primary" placeholder="Buscar usuario___________" style="background-color: #f0f7ff;">
-                            <button class="btn btn-primary px-4 fw-bold" type="button">( Buscar )</button>
+
+                    <form th:action="@{/dashboard/usuarios-activos}" method="get">
+                        <div class="search-bar mb-4 d-flex">
+                            <div class="input-group">
+                                <span class="input-group-text bg-primary text-white border-primary"><i class="bi bi-search"></i></span>
+                                <input type="text" name="buscar" th:value="${buscar}" class="form-control border-primary text-primary" placeholder="Buscar por nombre o cédula..." style="background-color: #f0f7ff;">
+                                <button class="btn btn-primary px-4 fw-bold" type="submit">( Buscar )</button>
+                            </div>
                         </div>
-                    </div>
+                    </form>
+
                     <div class="table-responsive mb-3">
                         <table class="table user-table text-center align-middle">
                             <thead>
@@ -80,12 +81,19 @@
                                         <span class="status-indicator" th:classappend="${u.activo} ? 'active' : 'inactive'"></span>
                                         <span th:text="${u.activo ? 'Activo' : 'Inactivo'}">Activo</span>
                                     </td>
-                                    <td><button class="btn btn-outline-secondary btn-sm px-3">Editar</button></td>
+                                    <td>
+                                        <a th:href="@{/dashboard/usuarios-activos/editar/{id}(id=${u.id})}" class="btn btn-outline-secondary btn-sm px-3">Editar</a>
+                                    </td>
                                 </tr>
                             </tbody>
                         </table>
                     </div>
 
+                    <div class="text-center mt-4">
+                        <a th:href="@{/dashboard/usuarios-activos/crear}" class="btn btn-primary px-4 shadow-sm" style="background-color: #235487; border-color: #235487;">
+                            + Crear Usuario
+                        </a>
+                    </div>
                 </div>
             </div>
         </div>

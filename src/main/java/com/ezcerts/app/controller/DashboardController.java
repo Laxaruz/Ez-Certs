@@ -10,6 +10,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.PathVariable;
 import com.ezcerts.app.service.UsuarioService;
 import com.ezcerts.app.service.EmpleadoService;
 import com.ezcerts.app.model.Usuario;
@@ -103,8 +105,9 @@ public class DashboardController {
     }
 
     @GetMapping("/dashboard/usuarios-activos")
-    public String usuariosActivos(Model model) {
-        model.addAttribute("usuarios", usuarioService.listar());
+    public String usuariosActivos(@RequestParam(required = false) String buscar, Model model) {
+        model.addAttribute("usuarios", usuarioService.buscarUsuarios(buscar));
+        model.addAttribute("buscar", buscar);
         return "usuarios-activos";
     }
 
@@ -134,6 +137,74 @@ public class DashboardController {
             e.printStackTrace(); // Imprime la traza en la terminal para identificar mapeos fallidos
             model.addAttribute("error", "Error interno al crear el usuario. Por favor revise su consola/log: " + e.getMessage());
             return "crear-usuario";
+        }
+    }
+
+    @GetMapping("/dashboard/usuarios-activos/editar/{id}")
+    public String mostrarFormularioEditar(@PathVariable("id") Long id, Model model) {
+        Usuario usuario = usuarioService.buscarPorId(id).orElse(null);
+        if (usuario == null) {
+            return "redirect:/dashboard/usuarios-activos";
+        }
+        
+        UsuarioCrearDto dto = new UsuarioCrearDto();
+        dto.setCorreo(usuario.getCorreo());
+        dto.setRol(usuario.getRol().name());
+        dto.setActivo(usuario.isActivo());
+        
+        if (usuario.getEmpleado() != null) {
+            Empleado e = usuario.getEmpleado();
+            dto.setNombre(e.getNombreCompleto());
+            dto.setCedula(e.getNumeroDocumento());
+            dto.setCargo(e.getCargo());
+            dto.setArea(e.getDepartamento());
+            dto.setFechaIngreso(e.getFechaIngreso());
+            dto.setSalario(e.getSalario());
+        } else {
+            dto.setNombre(usuario.getUsername());
+        }
+        
+        model.addAttribute("usuarioDto", dto);
+        model.addAttribute("usuarioId", usuario.getId());
+        return "editar-usuario";
+    }
+
+    @PostMapping("/dashboard/usuarios-activos/editar/{id}")
+    public String procesarFormularioEditar(@PathVariable("id") Long id, @ModelAttribute("usuarioDto") UsuarioCrearDto dto, org.springframework.web.servlet.mvc.support.RedirectAttributes redirectAttributes, Model model) {
+        if (dto.getContrasena() != null && !dto.getContrasena().trim().isEmpty()) {
+            if (!dto.getContrasena().equals(dto.getConfirmarContrasena())) {
+                model.addAttribute("error", "Las contraseñas no coinciden");
+                model.addAttribute("usuarioId", id);
+                return "editar-usuario";
+            }
+        }
+        
+        try {
+            usuarioService.actualizarUsuarioYEmpleado(id, dto);
+            redirectAttributes.addFlashAttribute("mensajeExito", "Usuario actualizado correctamente");
+            return "redirect:/dashboard/usuarios-activos";
+        } catch (org.springframework.dao.DataIntegrityViolationException ex) {
+            model.addAttribute("error", "Error: El correo o la cédula que intenta registrar ya existen en otro usuario.");
+            model.addAttribute("usuarioId", id);
+            return "editar-usuario";
+        } catch (Exception e) {
+            e.printStackTrace();
+            model.addAttribute("error", "Error interno al actualizar el usuario: " + e.getMessage());
+            model.addAttribute("usuarioId", id);
+            return "editar-usuario";
+        }
+    }
+
+    @PostMapping("/dashboard/usuarios-activos/eliminar/{id}")
+    public String eliminarUsuario(@PathVariable("id") Long id, org.springframework.web.servlet.mvc.support.RedirectAttributes redirectAttributes) {
+        try {
+            usuarioService.eliminarUsuario(id);
+            redirectAttributes.addFlashAttribute("mensajeExito", "Usuario eliminado correctamente");
+            return "redirect:/dashboard/usuarios-activos";
+        } catch (Exception e) {
+            e.printStackTrace();
+            redirectAttributes.addFlashAttribute("error", "Hubo un problema al eliminar el usuario");
+            return "redirect:/dashboard/usuarios-activos";
         }
     }
 }

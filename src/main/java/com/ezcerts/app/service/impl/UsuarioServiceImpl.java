@@ -6,6 +6,8 @@ import com.ezcerts.app.model.Rol;
 import com.ezcerts.app.dto.UsuarioCrearDto;
 import com.ezcerts.app.repository.UsuarioRepository;
 import com.ezcerts.app.repository.EmpleadoRepository;
+import com.ezcerts.app.repository.CertificadoRepository;
+import com.ezcerts.app.repository.SolicitudVacacionesRepository;
 import com.ezcerts.app.service.UsuarioService;
 import java.util.List;
 import java.util.Optional;
@@ -19,11 +21,15 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 public class UsuarioServiceImpl implements UsuarioService {
     private final UsuarioRepository usuarioRepository;
     private final EmpleadoRepository empleadoRepository;
+    private final CertificadoRepository certificadoRepository;
+    private final SolicitudVacacionesRepository solicitudVacacionesRepository;
     private final PasswordEncoder passwordEncoder;
 
-    public UsuarioServiceImpl(UsuarioRepository usuarioRepository, EmpleadoRepository empleadoRepository, PasswordEncoder passwordEncoder) {
+    public UsuarioServiceImpl(UsuarioRepository usuarioRepository, EmpleadoRepository empleadoRepository, CertificadoRepository certificadoRepository, SolicitudVacacionesRepository solicitudVacacionesRepository, PasswordEncoder passwordEncoder) {
         this.usuarioRepository = usuarioRepository;
         this.empleadoRepository = empleadoRepository;
+        this.certificadoRepository = certificadoRepository;
+        this.solicitudVacacionesRepository = solicitudVacacionesRepository;
         this.passwordEncoder = passwordEncoder;
     }
 
@@ -90,6 +96,58 @@ public class UsuarioServiceImpl implements UsuarioService {
     @Override
     public List<Usuario> listar() {
         return usuarioRepository.findAll();
+    }
+
+    @Override
+    public List<Usuario> buscarUsuarios(String parametro) {
+        if (parametro == null || parametro.trim().isEmpty()) {
+            return listar();
+        }
+        return usuarioRepository.findByFiltro(parametro.trim());
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public void actualizarUsuarioYEmpleado(Long id, UsuarioCrearDto dto) throws Exception {
+        Usuario usuario = usuarioRepository.findById(id).orElseThrow(() -> new Exception("Usuario no encontrado"));
+        
+        usuario.setCorreo(dto.getCorreo());
+        usuario.setRol(Rol.valueOf(dto.getRol().toUpperCase()));
+        usuario.setActivo(dto.isActivo());
+        
+        if (dto.getContrasena() != null && !dto.getContrasena().trim().isEmpty()) {
+            usuario.setContrasenaHash(passwordEncoder.encode(dto.getContrasena()));
+        }
+        
+        usuarioRepository.save(usuario);
+
+        if ("EMPLEADO".equalsIgnoreCase(dto.getRol())) {
+            Empleado empleado = usuario.getEmpleado();
+            if (empleado == null) {
+                empleado = new Empleado();
+                empleado.setUsuario(usuario);
+            }
+            empleado.setNombreCompleto(dto.getNombre());
+            empleado.setNumeroDocumento(dto.getCedula());
+            empleado.setDepartamento(dto.getArea() != null && !dto.getArea().isEmpty() ? dto.getArea() : "General");
+            empleado.setCargo(dto.getCargo() != null && !dto.getCargo().isEmpty() ? dto.getCargo() : "Analista");
+            empleado.setFechaIngreso(dto.getFechaIngreso() != null ? dto.getFechaIngreso() : LocalDate.now());
+            empleado.setSalario(dto.getSalario() != null ? dto.getSalario() : BigDecimal.ZERO);
+            empleadoRepository.save(empleado);
+        }
+    }
+
+    @Override
+    @Transactional
+    public void eliminarUsuario(Long id) {
+        Optional<Empleado> empleadoOpt = empleadoRepository.findByUsuarioId(id);
+        if (empleadoOpt.isPresent()) {
+            Empleado emp = empleadoOpt.get();
+            certificadoRepository.deleteByEmpleadoId(emp.getId());
+            solicitudVacacionesRepository.deleteByEmpleadoId(emp.getId());
+        }
+        empleadoRepository.deleteByUsuarioId(id);
+        usuarioRepository.deleteById(id);
     }
 
     @Override
