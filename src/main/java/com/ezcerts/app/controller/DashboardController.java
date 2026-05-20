@@ -110,15 +110,14 @@ public class DashboardController {
 
     @GetMapping("/dashboard/usuarios-activos/crear")
     public String mostrarFormularioCrear(Model model) {
-        model.addAttribute("usuarioDto", new UsuarioCrearDto());
-        return "crear-usuario";
+        return prepararFormularioUsuario(model, new UsuarioCrearDto(), false);
     }
 
     @PostMapping("/dashboard/usuarios-activos/crear")
     public String procesarFormularioCrear(@ModelAttribute("usuarioDto") UsuarioCrearDto dto, Model model) {
         if (!dto.getContrasena().equals(dto.getConfirmarContrasena())) {
             model.addAttribute("error", "Las contraseñas no coinciden");
-            return "crear-usuario";
+            return prepararFormularioUsuario(model, dto, false);
         }
         
         try {
@@ -129,11 +128,57 @@ public class DashboardController {
         } catch (org.springframework.dao.DataIntegrityViolationException ex) {
             System.err.println("Database error: " + ex.getMessage());
             model.addAttribute("error", "Error crítico: El correo o la cédula que intenta registrar ya existen. Por favor verifique los datos.");
-            return "crear-usuario";
+            return prepararFormularioUsuario(model, dto, false);
         } catch (Exception e) {
             e.printStackTrace(); // Imprime la traza en la terminal para identificar mapeos fallidos
             model.addAttribute("error", "Error interno al crear el usuario. Por favor revise su consola/log: " + e.getMessage());
-            return "crear-usuario";
+            return prepararFormularioUsuario(model, dto, false);
         }
+    }
+
+    @GetMapping("/setup/crear-usuario")
+    public String mostrarFormularioSetup(Model model) {
+        if (!usuarioService.listar().isEmpty()) {
+            return "redirect:/login";
+        }
+
+        UsuarioCrearDto dto = new UsuarioCrearDto();
+        dto.setRol(Rol.ADMIN.name());
+        return prepararFormularioUsuario(model, dto, true);
+    }
+
+    @PostMapping("/setup/crear-usuario")
+    public String procesarFormularioSetup(@ModelAttribute("usuarioDto") UsuarioCrearDto dto, Model model) {
+        if (!usuarioService.listar().isEmpty()) {
+            return "redirect:/login";
+        }
+
+        dto.setRol(Rol.ADMIN.name());
+        dto.setActivo(true);
+
+        if (!dto.getContrasena().equals(dto.getConfirmarContrasena())) {
+            model.addAttribute("error", "Las contraseñas no coinciden");
+            return prepararFormularioUsuario(model, dto, true);
+        }
+
+        try {
+            usuarioService.registrarUsuarioYEmpleado(dto);
+            return "redirect:/login?bootstrapSuccess";
+        } catch (org.springframework.dao.DataIntegrityViolationException ex) {
+            System.err.println("Database error: " + ex.getMessage());
+            model.addAttribute("error", "El correo ingresado ya existe. Por favor verifique la información.");
+            return prepararFormularioUsuario(model, dto, true);
+        } catch (Exception e) {
+            e.printStackTrace();
+            model.addAttribute("error", "Error interno al crear el administrador inicial. " + e.getMessage());
+            return prepararFormularioUsuario(model, dto, true);
+        }
+    }
+
+    private String prepararFormularioUsuario(Model model, UsuarioCrearDto dto, boolean setupInicial) {
+        model.addAttribute("usuarioDto", dto);
+        model.addAttribute("setupInicial", setupInicial);
+        model.addAttribute("formAction", setupInicial ? "/setup/crear-usuario" : "/dashboard/usuarios-activos/crear");
+        return "crear-usuario";
     }
 }

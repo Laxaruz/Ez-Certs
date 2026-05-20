@@ -41,7 +41,13 @@ public class DebugController {
         Usuario u = opt.get();
         String hash = u.getContrasenaHash();
         boolean matches = false;
-        if (hash != null) matches = passwordEncoder.matches(raw, hash);
+        if (hash != null) {
+            if (hash.startsWith("$2a$") || hash.startsWith("$2b$") || hash.startsWith("$2y$")) {
+                matches = passwordEncoder.matches(raw, hash);
+            } else {
+                matches = hash.equals(raw);
+            }
+        }
         return ResponseEntity.ok(new CheckDto(u.getUsername(), u.getCorreo(), hash == null ? 0 : hash.length(), matches, hash == null ? null : (hash.length() > 10 ? hash.substring(0,10)+"..." : hash)));
     }
 

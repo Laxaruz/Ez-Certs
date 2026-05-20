@@ -31,6 +31,7 @@
                 <div class="alerts">
                     <div class="alert alert-danger" th:if="${param.error}">Credenciales inválidas</div>
                     <div class="alert alert-success" th:if="${param.logout}">Has cerrado sesión correctamente</div>
+                    <div class="alert alert-success" th:if="${param.bootstrapSuccess}">Administrador inicial creado correctamente. Ya puedes iniciar sesión.</div>
                 </div>
 
                 <form th:action="@{/login}" method="post" class="mt-3">
