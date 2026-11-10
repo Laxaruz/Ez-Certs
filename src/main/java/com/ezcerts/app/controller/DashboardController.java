@@ -82,7 +82,18 @@ public class DashboardController {
     }
 
     @GetMapping("/dashboard/admin")
-    public String dashboardAdmin() {
+    public String dashboardAdmin(Model model) {
+        List<Certificado> certificados = certificadoRepository.findAll(
+                org.springframework.data.domain.Sort.by(org.springframework.data.domain.Sort.Direction.DESC, "fechaGeneracion"));
+        model.addAttribute("totalCertificados", certificados.size());
+        model.addAttribute("certificadosEsteMes", certificados.stream()
+                .filter(c -> c.getFechaGeneracion() != null
+                        && c.getFechaGeneracion().getMonth() == LocalDate.now().getMonth()
+                        && c.getFechaGeneracion().getYear() == LocalDate.now().getYear())
+                .count());
+        model.addAttribute("certificadosRecientes", certificados.stream().limit(4).toList());
+        model.addAttribute("usuariosActivos", usuarioService.buscarUsuarios(null).stream()
+                .filter(Usuario::isActivo).count());
         return "dashboard-admin";
     }
 

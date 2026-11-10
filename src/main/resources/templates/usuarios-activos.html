@@ -1,108 +1,147 @@
 <!DOCTYPE html>
 <html lang="es" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>EZ CERTS | Usuarios Activos</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous" />
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
-    <link rel="stylesheet" th:href="@{/css/login.css}" href="/css/login.css" />
-    <link rel="stylesheet" th:href="@{/css/dashboard.css}" href="/css/dashboard.css" />
-    <link rel="stylesheet" th:href="@{/css/usuarios-activos.css}" href="/css/usuarios-activos.css">
-
-    <link rel="stylesheet" th:href="@{/css/app.css}" href="/css/app.css" />
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Usuarios · EZ CERTS</title>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+<link rel="stylesheet" th:href="@{/css/app.css}" href="/css/app.css">
+<link rel="stylesheet" th:href="@{/css/experience.css}" href="/css/experience.css">
 </head>
-<body class="bg-light">
-<header class="app-header">
-    <div class="container d-flex align-items-center justify-content-between py-2">
-        <div class="d-flex align-items-center">
-            <div class="me-3"><span class="app-logo">EZ CERTS</span><div class="small text-muted">Gestión de Certificados Laborales</div></div>
-        </div>
-        <div class="d-flex align-items-center">
-            <div class="me-3 small text-muted">Bienvenido</div>
-            <div class="avatar me-2"></div>
-            <form th:action="@{/logout}" method="post" class="m-0">
-                <button class="btn btn-outline-danger btn-sm">Salir</button>
-            </form>
-        </div>
-    </div>
+<body class="app-page">
+<header class="site-header">
+<div class="shell header-inner">
+<a class="brand" th:href="@{/dashboard/admin}" href="/dashboard/admin">
+<span class="brand-mark">E<span>✓</span>
+</span>
+<span>EZ CERTS<small>Gestión laboral</small>
+</span>
+</a>
+<nav class="main-nav" aria-label="Navegación principal">
+<a class="nav-link" th:href="@{/dashboard/admin}" href="/dashboard/admin">Resumen</a>
+<a class="nav-link active" aria-current="page" th:href="@{/dashboard/usuarios-activos}" href="/dashboard/usuarios-activos">Usuarios</a>
+<a class="nav-link" th:href="@{/dashboard/admin/certificados-generados}" href="/dashboard/admin/certificados-generados">Certificados</a>
+</nav>
+<div class="header-actions">
+<span class="role-chip">RR. HH.</span>
+<form th:action="@{/logout}" action="/logout" method="post">
+<button class="logout-button" type="submit" aria-label="Cerrar sesión" title="Cerrar sesión">
+<i class="bi bi-box-arrow-right">
+</i>
+<span>Salir</span>
+</button>
+</form>
+</div>
+</div>
 </header>
-
-<section class="hero-bg pb-5">
-    <div class="container pt-4">
-
-        <!-- Botón de regreso -->
-        <div class="mb-3">
-            <a th:href="@{/dashboard/admin}" class="text-decoration-none text-muted" style="font-weight: 500; font-size: 0.95rem;">
-                <i class="bi bi-arrow-left me-1"></i> Volver al Dashboard
-            </a>
-        </div>
-
-        <div class="d-flex justify-content-between align-items-center mb-4">
-            <h3 class="fw-bold m-0" style="color: #0b2d4f;">Usuarios Activos</h3>
-        </div>
-
-        <div class="floating-wrapper">
-            <div class="card floating-card shadow-lg">
-                <div class="card-body px-4 py-4">
-                    <h4 class="fw-bold mb-3 d-flex align-items-center">
-                        Usuarios
-                    </h4>
-
-                    <form th:action="@{/dashboard/usuarios-activos}" method="get">
-                        <div class="search-bar mb-4 d-flex">
-                            <div class="input-group">
-                                <span class="input-group-text bg-primary text-white border-primary"><i class="bi bi-search"></i></span>
-                                <input type="text" name="buscar" th:value="${buscar}" class="form-control border-primary text-primary" placeholder="Buscar por nombre o cédula..." style="background-color: #f0f7ff;">
-                                <button class="btn btn-primary px-4 fw-bold" type="submit">( Buscar )</button>
-                            </div>
-                        </div>
-                    </form>
-
-                    <div class="table-responsive mb-3">
-                        <table class="table user-table text-center align-middle">
-                            <thead>
-                                <tr>
-                                    <th>Nombre</th>
-                                    <th>Cédula</th>
-                                    <th>Rol</th>
-                                    <th>Estado</th>
-                                    <th>Acciones</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr th:each="u : ${usuarios}">
-                                    <td class="text-start">
-                                        <i class="bi bi-person-circle fs-5 me-2 align-middle text-secondary"></i>
-                                        <span class="align-middle" th:text="${u.empleado != null ? u.empleado.nombreCompleto : u.username}">Nombre</span>
-                                    </td>
-                                    <td th:text="${u.empleado != null ? u.empleado.numeroDocumento : '-'}">Cédula</td>
-                                    <td th:text="${u.rol}">Rol</td>
-                                    <td>
-                                        <span class="status-indicator" th:classappend="${u.activo} ? 'active' : 'inactive'"></span>
-                                        <span th:text="${u.activo ? 'Activo' : 'Inactivo'}">Activo</span>
-                                    </td>
-                                    <td>
-                                        <a th:href="@{/dashboard/usuarios-activos/editar/{id}(id=${u.id})}" class="btn btn-outline-secondary btn-sm px-3">Editar</a>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-
-                    <div class="text-center mt-4">
-                        <a th:href="@{/dashboard/usuarios-activos/crear}" class="btn btn-primary px-4 shadow-sm" style="background-color: #235487; border-color: #235487;">
-                            + Crear Usuario
-                        </a>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+<main class="shell inner-main">
+<nav class="crumbs" aria-label="Ruta de navegación">
+<a th:href="@{/dashboard/admin}" href="/dashboard/admin">Inicio</a>
+<i class="bi bi-chevron-right">
+</i>
+<span>Usuarios</span>
+</nav>
+<div class="inner-heading">
+<div>
+<span class="eyebrow">PERSONAS Y ACCESOS</span>
+<h1>Usuarios<span class="heading-dot">.</span>
+</h1>
+<p>Gestiona los perfiles que hacen parte de EZ CERTS.</p>
+</div>
+<a class="button button-primary add-user-button" th:href="@{/dashboard/usuarios-activos/crear}" href="/dashboard/usuarios-activos/crear">
+<i class="bi bi-person-plus">
+</i> Crear usuario</a>
+</div>
+<div class="user-summary">
+<span class="summary-icon">
+<i class="bi bi-people">
+</i>
+</span>
+<div>
+<strong th:text="${#lists.size(usuarios)}">0</strong>
+<span th:text="${buscar != null and !#strings.isEmpty(buscar) ? 'resultados de búsqueda' : 'usuarios registrados'}">usuarios registrados</span>
+</div>
+<p>Encuentra y actualiza los datos de tu equipo desde esta vista.</p>
+</div>
+<section class="data-panel">
+<div class="data-panel-head">
+<div>
+<span class="eyebrow">DIRECTORIO</span>
+<h2>Personas del equipo</h2>
+<p>Busca por nombre o documento para encontrar un perfil.</p>
+</div>
+</div>
+<form class="toolbar" th:action="@{/dashboard/usuarios-activos}" method="get">
+<label class="search-control">
+<i class="bi bi-search">
+</i>
+<span class="visually-hidden">Buscar usuario</span>
+<input type="search" name="buscar" th:value="${buscar}" placeholder="Nombre o número de documento...">
+</label>
+<button type="submit" class="button button-primary">Buscar <i class="bi bi-arrow-right">
+</i>
+</button>
+<a class="clear-search" th:if="${buscar != null and !#strings.isEmpty(buscar)}" th:href="@{/dashboard/usuarios-activos}">Limpiar</a>
+</form>
+<div class="table-wrap">
+<table class="data-table">
+<thead>
+<tr>
+<th>Nombre</th>
+<th>Documento</th>
+<th>Rol</th>
+<th>Estado</th>
+<th>Acción</th>
+</tr>
+</thead>
+<tbody>
+<tr th:each="u : ${usuarios}">
+<td>
+<span class="table-person">
+<span class="person-avatar" aria-hidden="true">
+<i class="bi bi-person">
+</i>
+</span>
+<strong th:text="${u.empleado != null ? u.empleado.nombreCompleto : u.username}">Nombre</strong>
+</span>
+</td>
+<td th:text="${u.empleado != null ? u.empleado.numeroDocumento : '-'}">Documento</td>
+<td>
+<span class="type-pill" th:text="${u.rol}">EMPLEADO</span>
+</td>
+<td>
+<span class="state-pill" th:classappend="${u.activo} ? ' is-active' : ' is-inactive'">
+<span class="state-dot">
+</span>
+<span th:text="${u.activo ? 'Activo' : 'Inactivo'}">Activo</span>
+</span>
+</td>
+<td>
+<a class="table-action" th:href="@{/dashboard/usuarios-activos/editar/{id}(id=${u.id})}">Editar <i class="bi bi-arrow-up-right">
+</i>
+</a>
+</td>
+</tr>
+<tr th:if="${#lists.isEmpty(usuarios)}">
+<td colspan="5" class="table-empty">No encontramos usuarios. Prueba con otro término o crea uno nuevo.</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="data-panel-foot">
+<span>Los cambios en un perfil se reflejan al guardar.</span>
+<a th:href="@{/dashboard/usuarios-activos/crear}" href="/dashboard/usuarios-activos/crear">Añadir persona <i class="bi bi-arrow-right">
+</i>
+</a>
+</div>
 </section>
-
-<footer class="footer text-center py-3">
-    <div class="container text-muted small">© 2024 EZ CERTS | <a href="#">Términos y Condiciones</a> | <a href="#">Privacidad</a></div>
+</main>
+<footer class="site-footer">
+<div class="shell footer-inner">
+<span>
+<b>EZ CERTS</b> · Gestión laboral</span>
+<span>Documentos laborales, a tu alcance.</span>
+</div>
 </footer>
 </body>
 </html>

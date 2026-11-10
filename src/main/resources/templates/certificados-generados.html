@@ -1,113 +1,172 @@
 <!DOCTYPE html>
 <html lang="es" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>EZ CERTS | Certificados Generados</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous" />
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
-    <link rel="stylesheet" th:href="@{/css/login.css}" href="/css/login.css" />
-    <link rel="stylesheet" th:href="@{/css/dashboard.css}" href="/css/dashboard.css" />
-    <style>
-        .stats-box {
-            background-color: #f1f5f9;
-            border-radius: 8px;
-            text-align: center;
-            padding: 15px;
-        }
-        .stats-box h2 { margin: 0; font-weight: bold; color: #0b2d4f; }
-        .stats-box p { margin: 0; font-size: 0.85rem; color: #6c757d; }
-        .table-custom thead th { background-color: #f1f5f9; color: #0b2d4f; font-weight: 600; border-bottom: none; }
-        .status-badge { padding: 4px 8px; border-radius: 12px; font-size: 0.8rem; background-color: #e2f0d9; color: #2e7d32; font-weight: 500;}
-    </style>
-    <link rel="stylesheet" th:href="@{/css/app.css}" href="/css/app.css" />
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Certificados generados · EZ CERTS</title>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+<link rel="stylesheet" th:href="@{/css/app.css}" href="/css/app.css">
+<link rel="stylesheet" th:href="@{/css/experience.css}" href="/css/experience.css">
 </head>
-<body class="bg-light">
-<header class="app-header">
-    <div class="container d-flex align-items-center justify-content-between py-2">
-        <div class="d-flex align-items-center">
-            <div class="me-3"><a th:href="@{/dashboard/admin}" class="text-decoration-none"><span class="app-logo">EZ CERTS</span></a><div class="small text-muted">Gestión de Certificados Laborales</div></div>
-        </div>
-        <div class="d-flex align-items-center">
-            <div class="me-3 small text-muted text-end">
-                <div>Bienvenido</div>
-            </div>
-            <div class="avatar me-2"><i class="bi bi-person-fill"></i></div>
-            <form th:action="@{/logout}" method="post" class="m-0">
-                <button class="btn btn-outline-danger btn-sm">Salir</button>
-            </form>
-        </div>
-    </div>
+<body class="app-page">
+<header class="site-header">
+<div class="shell header-inner">
+<a class="brand" th:href="@{/dashboard/admin}" href="/dashboard/admin">
+<span class="brand-mark">E<span>✓</span>
+</span>
+<span>EZ CERTS<small>Gestión laboral</small>
+</span>
+</a>
+<nav class="main-nav" aria-label="Navegación principal">
+<a class="nav-link" th:href="@{/dashboard/admin}" href="/dashboard/admin">Resumen</a>
+<a class="nav-link" th:href="@{/dashboard/usuarios-activos}" href="/dashboard/usuarios-activos">Usuarios</a>
+<a class="nav-link active" aria-current="page" th:href="@{/dashboard/admin/certificados-generados}" href="/dashboard/admin/certificados-generados">Certificados</a>
+</nav>
+<div class="header-actions">
+<span class="role-chip">RR. HH.</span>
+<form th:action="@{/logout}" action="/logout" method="post">
+<button class="logout-button" type="submit" aria-label="Cerrar sesión" title="Cerrar sesión">
+<i class="bi bi-box-arrow-right">
+</i>
+<span>Salir</span>
+</button>
+</form>
+</div>
+</div>
 </header>
-
-<section class="hero-bg pb-5">
-    <div class="container pt-4">
-
-        <!-- Botón de regreso -->
-        <div class="mb-3">
-            <a th:href="@{/dashboard/admin}" class="text-decoration-none text-muted" style="font-weight: 500; font-size: 0.95rem;">
-                <i class="bi bi-arrow-left me-1"></i> Volver al Dashboard
-            </a>
-        </div>
-
-        <div class="d-flex justify-content-between align-items-center mb-4">
-            <h3 class="fw-bold m-0" style="color: #0b2d4f;">Certificados Generados</h3>
-        </div>
-
-        <div class="card shadow-lg border-0 rounded-4">
-            <div class="card-body p-4 p-md-5">
-                <h5 class="text-primary font-weight-bold mb-4" style="color: #0b2d4f !important;"><i class="bi bi-file-earmark-text-fill me-2"></i>Certificados Generados</h5>
-
-                <div class="row mb-4 g-3">
-                    <div class="col-md-4">
-                        <div class="stats-box">
-                            <h2 th:text="${esteMes}">48</h2>
-                            <p>Este mes</p>
-                        </div>
-                    </div>
-                    <div class="col-md-4">
-                        <div class="stats-box">
-                            <h2 th:text="${total}">312</h2>
-                            <p th:text="'Total ' + ${anio}">Total 2024</p>
-                        </div>
-                    </div>
-                    <div class="col-md-4">
-                        <div class="stats-box">
-                            <h2 th:text="${hoy}">6</h2>
-                            <p>Hoy</p>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="table-responsive mt-4">
-                    <table class="table table-hover table-custom align-middle">
-                        <thead>
-                            <tr>
-                                <th>Empleado</th>
-                                <th>Tipo</th>
-                                <th>Fecha</th>
-                                <th>Código Ref</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr th:each="cert : ${certificados}">
-                                <td th:text="${cert.empleado.nombreCompleto}">Laura Aldana</td>
-                                <td th:text="${cert.tipo}">Laboral</td>
-                                <td th:text="${#temporals.format(cert.fechaGeneracion, 'dd/MM/yyyy')}">09/04/2026</td>
-                                <td><span class="status-badge" th:text="${cert.codigoReferencia}">CERT-1234</span></td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-
-            </div>
-        </div>
-
-    </div>
+<main class="shell inner-main">
+<nav class="crumbs" aria-label="Ruta de navegación">
+<a th:href="@{/dashboard/admin}" href="/dashboard/admin">Inicio</a>
+<i class="bi bi-chevron-right">
+</i>
+<span>Certificados</span>
+</nav>
+<div class="inner-heading">
+<div>
+<span class="eyebrow">DOCUMENTOS EMITIDOS</span>
+<h1>Certificados generados<span class="heading-dot">.</span>
+</h1>
+<p>Un registro claro de los documentos que ha generado tu equipo.</p>
+</div>
+<div class="heading-ornament" aria-hidden="true">
+<i class="bi bi-file-earmark-text">
+</i>
+</div>
+</div>
+<section class="stats-row" aria-label="Resumen de certificados">
+<article class="stat-tile">
+<span class="stat-icon mint">
+<i class="bi bi-collection">
+</i>
+</span>
+<div>
+<span>Total histórico</span>
+<strong th:text="${total}">0</strong>
+<small>Certificados registrados</small>
+</div>
+</article>
+<article class="stat-tile">
+<span class="stat-icon lavender">
+<i class="bi bi-calendar-month">
+</i>
+</span>
+<div>
+<span>Este mes</span>
+<strong th:text="${esteMes}">0</strong>
+<small>Emitidos recientemente</small>
+</div>
+</article>
+<article class="stat-tile">
+<span class="stat-icon peach">
+<i class="bi bi-calendar-check">
+</i>
+</span>
+<div>
+<span>Hoy</span>
+<strong th:text="${hoy}">0</strong>
+<small>Documentos del día</small>
+</div>
+</article>
 </section>
-
-<footer class="footer text-center py-3 mt-auto">
-    <div class="container text-muted small">© 2024 EZ CERTS | <a href="#">Términos y Condiciones</a> | <a href="#">Privacidad</a></div>
+<section class="data-panel">
+<div class="data-panel-head">
+<div>
+<span class="eyebrow">HISTORIAL</span>
+<h2>Todos los certificados</h2>
+<p>Consulta por empleado, tipo o código de referencia.</p>
+</div>
+<span class="record-count" th:text="${total} + ' registros'">0 registros</span>
+</div>
+<div class="toolbar">
+<label class="search-control">
+<i class="bi bi-search">
+</i>
+<span class="visually-hidden">Buscar certificado</span>
+<input id="certificate-search" type="search" placeholder="Buscar empleado o referencia..." autocomplete="off">
+</label>
+<label class="filter-control">
+<span class="visually-hidden">Filtrar por tipo</span>
+<select id="certificate-type">
+<option value="">Todos los tipos</option>
+<option value="LABORAL">Laboral</option>
+<option value="INGRESOS">Ingresos</option>
+<option value="EXPERIENCIA">Experiencia</option>
+<option value="ESTUDIOS">Estudios</option>
+</select>
+<i class="bi bi-chevron-down">
+</i>
+</label>
+</div>
+<div class="table-wrap">
+<table class="data-table">
+<thead>
+<tr>
+<th>Empleado</th>
+<th>Tipo de certificado</th>
+<th>Fecha de emisión</th>
+<th>Referencia</th>
+</tr>
+</thead>
+<tbody>
+<tr class="cert-row" th:each="cert : ${certificados}" th:attr="data-type=${cert.tipo}">
+<td>
+<span class="table-person">
+<span class="person-avatar" aria-hidden="true">
+<i class="bi bi-person">
+</i>
+</span>
+<strong th:text="${cert.empleado.nombreCompleto}">Empleado</strong>
+</span>
+</td>
+<td>
+<span class="type-pill" th:text="${cert.tipo}">LABORAL</span>
+</td>
+<td th:text="${#temporals.format(cert.fechaGeneracion, 'dd/MM/yyyy')}">01/01/2026</td>
+<td>
+<code class="reference-code" th:text="${cert.codigoReferencia}">CERT-0000</code>
+</td>
+</tr>
+<tr th:if="${#lists.isEmpty(certificados)}">
+<td colspan="4" class="table-empty">Aún no hay certificados generados.</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="certificate-empty-filter" class="table-empty" hidden>No encontramos certificados con esos filtros.</div>
+<div class="data-panel-foot">
+<span>Los certificados aparecen aquí al generarse.</span>
+<span th:text="'Actualizado en ' + ${anio}">Actualizado</span>
+</div>
+</section>
+</main>
+<footer class="site-footer">
+<div class="shell footer-inner">
+<span>
+<b>EZ CERTS</b> · Gestión laboral</span>
+<span>Documentos laborales, a tu alcance.</span>
+</div>
 </footer>
+<script th:src="@{/js/app.js}" src="/js/app.js" defer>
+</script>
 </body>
 </html>

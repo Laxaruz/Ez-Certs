@@ -10,22 +10,10 @@
     <link rel="stylesheet" th:href="@{/css/dashboard.css}" href="/css/dashboard.css" />
     <link rel="stylesheet" th:href="@{/css/solicitar-certificado.css}" href="/css/solicitar-certificado.css" />
     <link rel="stylesheet" th:href="@{/css/app.css}" href="/css/app.css" />
+    <link rel="stylesheet" th:href="@{/css/experience.css}" href="/css/experience.css" />
 </head>
 <body class="bg-light">
-<header class="app-header">
-    <div class="container d-flex align-items-center justify-content-between py-2">
-        <div class="d-flex align-items-center">
-            <div class="me-3"><span class="app-logo">EZ CERTS</span><div class="small text-muted">Gestión de Certificados Laborales</div></div>
-        </div>
-        <div class="d-flex align-items-center">
-            <div class="me-3 small text-muted">Bienvenido</div>
-            <div class="avatar me-2"></div>
-            <form th:action="@{/logout}" method="post" class="m-0">
-                <button class="btn btn-outline-danger btn-sm">Salir</button>
-            </form>
-        </div>
-    </div>
-</header>
+<header class="site-header"><div class="shell header-inner"><a class="brand" th:href="@{/dashboard/empleado}" href="/dashboard/empleado"><span class="brand-mark">E<span>✓</span></span><span>EZ CERTS<small>Gestión laboral</small></span></a><nav class="main-nav" aria-label="Navegación principal"><a class="nav-link" th:href="@{/dashboard/empleado}" href="/dashboard/empleado">Mi espacio</a><a class="nav-link active" th:href="@{/dashboard/empleado/solicitar-certificado}" href="/dashboard/empleado/solicitar-certificado">Solicitar</a></nav><div class="header-actions"><span class="role-chip">Empleado</span><form th:action="@{/logout}" action="/logout" method="post"><button class="logout-button" type="submit" aria-label="Cerrar sesión" title="Cerrar sesión"><i class="bi bi-box-arrow-right"></i><span>Salir</span></button></form></div></div></header>
 
 <section class="hero-bg pb-5">
     <div class="container">
@@ -81,51 +69,55 @@
                         <div class="row g-3 mb-4">
 
                             <div class="col-md-6">
-                                <div class="cert-option card h-100" onclick="selectCertOption(this)">
-                                    <input type="radio" name="tipo" value="LABORAL" class="d-none">
+                                <label class="cert-option card h-100">
+                                    <input type="radio" name="tipo" value="LABORAL" class="visually-hidden" checked>
                                     <div class="card-body">
+                                        <span class="option-icon"><i class="bi bi-briefcase"></i></span>
                                         <h6 class="cert-title mb-1">Certificado Laboral</h6>
                                         <p class="cert-desc mb-0 text-muted small">Vinculación y cargo actual</p>
                                     </div>
-                                </div>
+                                </label>
                             </div>
 
                             <div class="col-md-6">
-                                <div class="cert-option card h-100" onclick="selectCertOption(this)">
-                                    <input type="radio" name="tipo" value="INGRESOS" class="d-none">
+                                <label class="cert-option card h-100">
+                                    <input type="radio" name="tipo" value="INGRESOS" class="visually-hidden">
                                     <div class="card-body">
+                                        <span class="option-icon"><i class="bi bi-graph-up-arrow"></i></span>
                                         <h6 class="cert-title mb-1">Certificado de Ingresos</h6>
                                         <p class="cert-desc mb-0 text-muted small">Salario y deducciones</p>
                                     </div>
-                                </div>
+                                </label>
                             </div>
 
                             <div class="col-md-6">
-                                <div class="cert-option card h-100 active" onclick="selectCertOption(this)">
-                                    <input type="radio" name="tipo" value="EXPERIENCIA" class="d-none" checked>
+                                <label class="cert-option card h-100">
+                                    <input type="radio" name="tipo" value="EXPERIENCIA" class="visually-hidden">
                                     <div class="card-body">
+                                        <span class="option-icon"><i class="bi bi-award"></i></span>
                                         <h6 class="cert-title mb-1">Certificado de Experiencia</h6>
                                         <p class="cert-desc mb-0 text-muted small">Tiempo laborado y funciones</p>
                                     </div>
-                                </div>
+                                </label>
                             </div>
 
                             <div class="col-md-6">
-                                <div class="cert-option card h-100" onclick="selectCertOption(this)">
-                                    <input type="radio" name="tipo" value="ESTUDIOS" class="d-none">
+                                <label class="cert-option card h-100">
+                                    <input type="radio" name="tipo" value="ESTUDIOS" class="visually-hidden">
                                     <div class="card-body">
+                                        <span class="option-icon"><i class="bi bi-mortarboard"></i></span>
                                         <h6 class="cert-title mb-1">Certificado de Estudios</h6>
                                         <p class="cert-desc mb-0 text-muted small">Nivel educativo certificado</p>
                                     </div>
-                                </div>
+                                </label>
                             </div>
 
                         </div>
 
                         <!-- Continue button -->
                         <div class="text-center mt-5">
-                            <button type="submit" class="btn btn-outline-primary btn-continue px-5 py-2 rounded-pill w-100" id="btnContinuar" style="max-width: 600px;">
-                                ( Continuar &rarr; )
+                            <button type="submit" class="btn btn-primary btn-continue px-5 py-2 w-100" id="btnContinuar" style="max-width: 600px;">
+                                Continuar <i class="bi bi-arrow-right ms-2"></i>
                             </button>
                         </div>
                     </form>
@@ -137,35 +129,7 @@
     </div>
 </section>
 
-<footer class="footer text-center py-3 mt-auto">
-    <div class="container text-muted small">© 2024 EZ CERTS | <a href="#">Términos y Condiciones</a> | <a href="#">Privacidad</a></div>
-</footer>
-
-<script>
-    function selectCertOption(element) {
-        // Remover clase 'active' de todas las opciones
-        document.querySelectorAll('.cert-option').forEach(el => el.classList.remove('active'));
-        // Agregar clase 'active' al elemento clickeado
-        element.classList.add('active');
-        // Marcar el radio button interno
-        const radio = element.querySelector('input[type="radio"]');
-        if (radio) radio.checked = true;
-
-        // Habilitar / Estilizar el boton continuar a activo
-        const btn = document.getElementById('btnContinuar');
-        btn.classList.add('btn-primary', 'text-white');
-        btn.classList.remove('btn-outline-primary', 'disabled');
-    }
-
-    // Inicializar el boton de continuar (asumimos que en el mockup y carga inicial, experiencia esta marcado)
-    document.addEventListener('DOMContentLoaded', () => {
-        const activeOption = document.querySelector('.cert-option.active');
-        if (activeOption) {
-            const btn = document.getElementById('btnContinuar');
-            btn.classList.add('btn-outline-primary'); // Make it look like mockup initial state, quite un-prominent but not strictly disabled
-        }
-    });
-</script>
+<footer class="site-footer"><div class="shell footer-inner"><span><b>EZ CERTS</b> · Gestión laboral</span><span>Documentos laborales, a tu alcance.</span></div></footer>
 
 </body>
 </html>

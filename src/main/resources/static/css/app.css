@@ -16,6 +16,8 @@ a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,te
 .brand small{display:block;margin-top:4px;color:#77919b;font:500 .67rem 'DM Sans',sans-serif;letter-spacing:.02em}
 .brand-mark{display:grid;place-items:center;width:42px;height:42px;border-radius:13px;background:var(--navy);color:#fff;font-size:1.35rem;letter-spacing:-.15em;padding-right:5px}
 .brand-mark span{color:#63cfaf;font-size:.65em;letter-spacing:0}
+.brand-mark{position:relative;display:flex;align-items:center;justify-content:center}
+.brand-mark span{position:absolute;right:5px;bottom:5px;font-size:.55em}
 .site-header{background:#fff;border-bottom:1px solid var(--line)}
 .header-inner{min-height:83px;display:flex;align-items:center;justify-content:space-between;gap:20px}
 .header-actions{display:flex;align-items:center;gap:22px}

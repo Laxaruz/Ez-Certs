@@ -4,40 +4,70 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Mi espacio · EZ CERTS</title>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
 <link rel="stylesheet" th:href="@{/css/app.css}" href="/css/app.css">
+<link rel="stylesheet" th:href="@{/css/experience.css}" href="/css/experience.css">
 </head>
 <body class="app-page">
 <header class="site-header">
 <div class="shell header-inner">
-<a class="brand" th:href="@{/dashboard/empleado}" href="/dashboard/empleado">
+<a class="brand" th:href="@{/dashboard}" href="/dashboard">
 <span class="brand-mark">E<span>✓</span>
 </span>
 <span>EZ CERTS<small>Gestión laboral</small>
 </span>
 </a>
+<nav class="main-nav" aria-label="Navegación principal">
+<a class="nav-link active" th:href="@{/dashboard/empleado}" href="/dashboard/empleado">Mi espacio</a>
+<a class="nav-link" th:href="@{/dashboard/empleado/solicitar-certificado}" href="/dashboard/empleado/solicitar-certificado">Solicitar</a>
+</nav>
 <div class="header-actions">
-<span class="header-role">Portal del empleado</span>
+<span class="role-chip">Empleado</span>
 <form th:action="@{/logout}" action="/logout" method="post">
-<button class="button button-ghost" type="submit">Cerrar sesión <span aria-hidden="true">↗</span>
+<button class="logout-button" type="submit" aria-label="Cerrar sesión" title="Cerrar sesión">
+<i class="bi bi-box-arrow-right">
+</i>
+<span>Salir</span>
 </button>
 </form>
 </div>
 </div>
 </header>
 <main class="shell dashboard-main">
-<div class="page-intro">
-<div>
-<span class="eyebrow">PORTAL DEL EMPLEADO</span>
-<h1>Todo en orden,<br>
-<em>todo en un lugar.</em>
+<section class="dashboard-hero employee-hero">
+<div class="hero-copy">
+<span class="hero-kicker">
+<span class="live-dot">
+</span> PORTAL DEL EMPLEADO</span>
+<h1>Tus documentos,<br>
+<em>a un clic de distancia.</em>
 </h1>
-<p>Gestiona tus certificados laborales y revisa tus documentos recientes.</p>
+<p>Genera certificados laborales y encuentra tus documentos en un mismo lugar.</p>
+<a class="hero-cta" th:href="@{/dashboard/empleado/solicitar-certificado}" href="/dashboard/empleado/solicitar-certificado">
+<i class="bi bi-file-earmark-plus">
+</i> Solicitar certificado <i class="bi bi-arrow-up-right">
+</i>
+</a>
 </div>
-<div class="intro-art" aria-hidden="true">
-<span class="art-sheet art-sheet-back">
+<div class="hero-illustration" aria-hidden="true">
+<div class="orbit orbit-one">
+</div>
+<div class="orbit orbit-two">
+</div>
+<div class="visual-card visual-back">
+<i class="bi bi-person-badge">
+</i>
+<span>
 </span>
-<span class="art-sheet art-sheet-front">
-<span class="art-check">✓</span>
+<span>
+</span>
+</div>
+<div class="visual-card visual-front">
+<span class="visual-check">
+<i class="bi bi-check-lg">
+</i>
+</span>
+<span class="visual-lines">
 <i>
 </i>
 <i>
@@ -46,60 +76,117 @@
 </i>
 </span>
 </div>
-</div>
-<section class="section-head">
-<div>
-<span class="eyebrow">EMPIEZA AQUÍ</span>
-<h2>¿Qué necesitas hacer?</h2>
+<div class="floating-spark spark-one">✦</div>
+<div class="floating-spark spark-two">✦</div>
 </div>
 </section>
-<div class="feature-grid">
-<a class="feature-card feature-primary" th:href="@{/dashboard/empleado/solicitar-certificado}" href="/dashboard/empleado/solicitar-certificado">
-<span class="feature-icon">▤</span>
-<span class="feature-content">
+<section class="overview-section">
+<div class="section-heading">
+<div>
+<span class="eyebrow">MI ACTIVIDAD</span>
+<h2>Todo lo que necesitas, aquí</h2>
+</div>
+</div>
+<div class="employee-overview">
+<div class="employee-count">
+<span class="metric-icon lavender">
+<i class="bi bi-file-earmark-check">
+</i>
+</span>
+<div>
+<strong th:text="${cantidadCertificados != null ? cantidadCertificados : 0}">0</strong>
+<span>certificados generados</span>
+</div>
+</div>
+<div class="journey">
+<span>
+<i class="bi bi-1-circle-fill">
+</i> Elige el tipo</span>
+<i class="bi bi-chevron-right">
+</i>
+<span>
+<i class="bi bi-2-circle-fill">
+</i> Revisa tus datos</span>
+<i class="bi bi-chevron-right">
+</i>
+<span>
+<i class="bi bi-3-circle-fill">
+</i> Descarga tu PDF</span>
+</div>
+</div>
+</section>
+<section class="workspace-section">
+<div class="section-heading">
+<div>
+<span class="eyebrow">ACCESOS RÁPIDOS</span>
+<h2>¿Qué deseas hacer?</h2>
+</div>
+</div>
+<div class="workspace-grid">
+<a class="workspace-card workspace-certs" th:href="@{/dashboard/empleado/solicitar-certificado}" href="/dashboard/empleado/solicitar-certificado">
+<span class="workspace-icon">
+<i class="bi bi-file-earmark-plus">
+</i>
+</span>
 <strong>Solicitar certificado</strong>
-<span>Elige el tipo, revisa tus datos y genera tu documento en PDF.</span>
+<span>Elige entre certificado laboral, de ingresos, experiencia o estudios.</span>
+<span class="workspace-action">Empezar solicitud <i class="bi bi-arrow-up-right">
+</i>
 </span>
-<span class="feature-arrow" aria-hidden="true">↗</span>
 </a>
-<div class="feature-card feature-muted">
-<span class="feature-icon">◷</span>
-<span class="feature-content">
-<strong>Vacaciones</strong>
-<span>La gestión de vacaciones estará disponible próximamente.</span>
-<span class="coming-soon">PRÓXIMAMENTE</span>
+<div class="workspace-card workspace-disabled">
+<span class="workspace-icon">
+<i class="bi bi-calendar2-week">
+</i>
 </span>
+<strong>Mis vacaciones</strong>
+<span>Pronto podrás consultar y gestionar tus periodos de vacaciones.</span>
+<span class="next-tag">PRÓXIMAMENTE</span>
 </div>
 </div>
-<section class="activity-panel">
+</section>
+<section class="activity-panel employee-recent">
 <div class="panel-heading">
 <div>
-<span class="eyebrow">TU ACTIVIDAD</span>
+<span class="eyebrow">MIS DOCUMENTOS</span>
 <h2>Certificados recientes</h2>
 </div>
 <span class="count-pill" th:text="${cantidadCertificados != null ? cantidadCertificados : 0} + ' documentos'">0 documentos</span>
 </div>
 <div class="empty-state" th:if="${actividades == null or #lists.isEmpty(actividades)}">
-<span class="empty-icon">▤</span>
+<span class="empty-icon">
+<i class="bi bi-inbox">
+</i>
+</span>
 <strong>Aún no tienes certificados</strong>
-<p>Cuando generes uno, aparecerá aquí para que puedas descargarlo.</p>
-<a class="text-link" th:href="@{/dashboard/empleado/solicitar-certificado}" href="/dashboard/empleado/solicitar-certificado">Crear mi primer certificado →</a>
+<p>Tu primer documento aparecerá aquí para que puedas volver a descargarlo.</p>
+<a class="text-link" th:href="@{/dashboard/empleado/solicitar-certificado}" href="/dashboard/empleado/solicitar-certificado">Crear mi primer certificado <i class="bi bi-arrow-right">
+</i>
+</a>
 </div>
 <div class="activity-list" th:if="${actividades != null and !#lists.isEmpty(actividades)}">
 <a class="activity-item" th:each="actividad : ${actividades}" th:href="@{/dashboard/empleado/solicitar-certificado/descargar/{id}(id=${actividad.id})}">
-<span class="activity-icon">↓</span>
+<span class="activity-icon">
+<i class="bi bi-file-earmark-pdf">
+</i>
+</span>
 <span class="activity-name">
 <strong th:text="'Certificado de ' + ${actividad.tipo}">Certificado laboral</strong>
 <small th:text="${actividad.codigoReferencia}">Referencia</small>
 </span>
-<time th:text="${#temporals.format(actividad.fechaGeneracion, 'dd/MM/yyyy')}">Fecha</time>
-<span class="activity-download">Descargar ↗</span>
+<time th:text="${#temporals.format(actividad.fechaGeneracion, 'dd MMM yyyy')}">Fecha</time>
+<span class="activity-download">
+<i class="bi bi-download">
+</i> Descargar</span>
 </a>
 </div>
 </section>
 </main>
 <footer class="site-footer">
-<div class="shell">EZ CERTS <span>Documentos laborales, a tu alcance.</span>
+<div class="shell footer-inner">
+<span>
+<b>EZ CERTS</b> · Gestión laboral</span>
+<span>Documentos laborales, a tu alcance.</span>
 </div>
 </footer>
 </body>
