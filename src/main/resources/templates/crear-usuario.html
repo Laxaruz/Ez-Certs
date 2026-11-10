@@ -9,6 +9,7 @@
     <link rel="stylesheet" th:href="@{/css/login.css}" href="/css/login.css" />
     <link rel="stylesheet" th:href="@{/css/dashboard.css}" href="/css/dashboard.css" />
     <link rel="stylesheet" th:href="@{/css/crear-usuario.css}" href="/css/crear-usuario.css" />
+    <link rel="stylesheet" th:href="@{/css/app.css}" href="/css/app.css" />
 </head>
 <body class="bg-light">
 <header class="app-header">
@@ -51,10 +52,8 @@
                             <i class="bi bi-person-fill text-primary" style="font-size: 2.5rem;"></i>
                         </div>
                         <div>
-                            <button class="btn btn-outline-light text-muted border px-4 btn-sm mb-1 bg-white">
-                                + Subir foto
-                            </button>
-                            <div class="text-muted" style="font-size: 0.8rem; color: #adb5bd !important;">PNG o JPG, máx. 2MB</div>
+                            <div class="fw-semibold">Perfil de usuario</div>
+                            <div class="text-muted small">Datos laborales y acceso a la plataforma</div>
                         </div>
                     </div>
                     <div th:if="${error}" class="alert alert-danger" th:text="${error}"></div>
