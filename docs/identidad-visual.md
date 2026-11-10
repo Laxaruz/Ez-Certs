@@ -2,27 +2,29 @@
 
 ## Concepto
 
-El símbolo combina una hoja con esquina plegada (documento laboral) y una marca de validación (certificado emitido y verificable). El contorno queda abierto visualmente por la marca: comunica un trámite que termina con un documento listo para usar. El logotipo completo incluye el nombre **EZ CERTS** y el descriptor **Gestión laboral**.
+El logotipo es una composición tipográfica original. Las letras **EZ** se construyen con geometría de trazos amplios; la **Z** se pliega al final como una cinta de certificación. **CERTS** mantiene un peso más sobrio para que el nombre completo sea el protagonista. La línea verde refuerza la idea de documento validado sin añadir una hoja o un check genérico al costado.
+
+El descriptor «Gestión laboral» aparece solo en el logotipo principal. Las versiones compactas conservan la legibilidad en la navegación.
 
 ## Archivos
 
 | Uso | Archivo |
 | --- | --- |
-| Logotipo principal sobre fondo claro | [ez-certs-wordmark.svg](../src/main/resources/static/img/ez-certs-wordmark.svg) |
-| Logotipo inverso sobre fondo oscuro | [ez-certs-wordmark-light.svg](../src/main/resources/static/img/ez-certs-wordmark-light.svg) |
+| Logotipo principal para fondos claros | [ez-certs-wordmark.svg](../src/main/resources/static/img/ez-certs-wordmark.svg) |
+| Logotipo principal para fondos oscuros | [ez-certs-wordmark-light.svg](../src/main/resources/static/img/ez-certs-wordmark-light.svg) |
 | Logotipo compacto para encabezados | [ez-certs-wordmark-compact.svg](../src/main/resources/static/img/ez-certs-wordmark-compact.svg) |
 | Logotipo compacto inverso | [ez-certs-wordmark-compact-light.svg](../src/main/resources/static/img/ez-certs-wordmark-compact-light.svg) |
-| Símbolo reducido / favicon | [ez-certs-logo.svg](../src/main/resources/static/img/ez-certs-logo.svg) |
+| Reducción «EZ» para favicon | [ez-certs-logo.svg](../src/main/resources/static/img/ez-certs-logo.svg) |
 
-Los SVG son escalables y las letras de «EZ CERTS» están convertidas a trazados para conservar su forma en otros equipos. Para presentaciones o impresión, exportar desde el SVG al tamaño necesario. No estirar, recolorear parcialmente ni colocar el logotipo claro sobre fondos blancos.
+El nombre está trazado como vector para que conserve su forma sin instalar fuentes. El descriptor se mantiene como texto SVG y usa Bahnschrift cuando está disponible, con Arial como alternativa.
 
 ## Colores
 
-- Azul profundo: `#143548` — estructura y texto principal.
-- Verde validación: `#10A587` — marca de aprobación y acentos.
-- Verde claro: `#70DBBA` — versión inversa.
-- Gris verdoso: `#63817F` — descriptor secundario.
+- Azul tinta: `#153348` — letra principal y texto.
+- Azul digital: `#087FBD` — Z.
+- Verde validación: `#11B99A` — pliegue y línea.
+- Sobre fondo oscuro: `#F4FBFF`, `#62CAFF` y `#69E9C5`.
 
-## Aplicación
+## Uso
 
-Usar el logotipo horizontal como identidad principal en encabezados, documentos y piezas de presentación. Reservar el símbolo reducido para favicon, avatar o espacios donde el nombre no cabe. Mantener un área libre alrededor equivalente, como mínimo, a la mitad de la altura del símbolo. En pantalla, procurar un ancho mínimo de 170 px para el logotipo horizontal; por debajo de ese tamaño usar solo el símbolo y añadir el nombre en texto accesible.
+Usar el logotipo principal en portadas, presentaciones y documentos. Usar la versión compacta en encabezados de la web; la reducción «EZ» queda reservada para favicon o tamaños donde no cabe el nombre. Mantener alrededor un espacio libre mínimo equivalente a la altura de la E. No deformar ni recolorear parcialmente el archivo.

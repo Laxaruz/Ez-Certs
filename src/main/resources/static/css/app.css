@@ -13,7 +13,7 @@ a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,te
 .eyebrow{color:var(--teal);font-size:.72rem;font-weight:800;letter-spacing:.15em}
 .muted{color:var(--muted)}
 .brand{display:inline-flex;align-items:center;gap:12px;color:var(--navy);text-decoration:none;font-size:1.04rem;font-weight:800;letter-spacing:.02em;line-height:1.15}
-.brand-lockup{display:block;flex:none;width:205px;height:50px;object-fit:contain;object-position:left center;transition:transform .25s ease}
+.brand-lockup{display:block;flex:none;width:220px;height:56px;object-fit:contain;object-position:left center;transition:transform .25s ease}
 .brand:hover .brand-lockup{transform:translateY(-2px)}
 .site-header{background:#fff;border-bottom:1px solid var(--line)}
 .header-inner{min-height:83px;display:flex;align-items:center;justify-content:space-between;gap:20px}
@@ -156,7 +156,7 @@ body.bg-light{background:var(--page)!important}
 .header-inner{min-height:72px}
 .header-role{display:none}
 .brand{font-size:.9rem}
-.brand-lockup{width:172px;height:42px}
+.brand-lockup{width:176px;height:46px}
 .button-ghost{padding:8px 10px;font-size:.74rem}
 .dashboard-main{padding-top:16px;padding-bottom:45px}
 .page-intro{min-height:255px;padding:30px 26px}

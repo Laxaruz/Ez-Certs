@@ -1,10 +1,9 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-labelledby="title">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 140 140" role="img" aria-labelledby="title">
   <title id="title">EZ CERTS</title>
-  <rect width="64" height="64" rx="16" fill="#143548"/>
-  <g fill="none" stroke="#F4FFFC" stroke-linecap="round" stroke-linejoin="round">
-    <path d="M20 10h23l9 9v30a5 5 0 0 1-5 5H20a5 5 0 0 1-5-5V15a5 5 0 0 1 5-5Z" stroke-width="3.5"/>
-    <path d="M43 11v7a3 3 0 0 0 3 3h6" stroke-width="3.5"/>
-    <path d="M24 28h15M24 35h10" stroke="#A8CEC6" stroke-width="3"/>
+  <rect width="140" height="140" rx="27" fill="#153348"/>
+  <g transform="translate(12 26) scale(.57)">
+    <path d="M12 24h82v15H30v25h55v15H30v27h64v15H12z" fill="#F4FBFF"/>
+    <path d="M105 24h94v14l-69 68h69v15H103v-14l69-68h-67z" fill="#62CAFF"/>
+    <path d="m174 106 14-14 11 14v15h-25z" fill="#69E9C5"/>
   </g>
-  <path d="m27 43 7 7 17-19" fill="none" stroke="#70DBBA" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
 </svg>
